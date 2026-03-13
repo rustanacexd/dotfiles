@@ -1,0 +1,101 @@
+{
+  "workbench.iconTheme": "vscode-icons",
+  "security.workspace.trust.untrustedFiles": "open",
+  "editor.fontFamily": "JetBrainsMono Nerd Font",
+  "vim.useSystemClipboard": true,
+  "notebook.lineNumbers": "on",
+  "terminal.integrated.allowedLinkSchemes": [
+    "file",
+    "http",
+    "https",
+    "mailto",
+    "vscode",
+    "vscode-insiders",
+    "docker-desktop"
+  ],
+  "vsicons.dontShowNewVersionMessage": true,
+  "markdown.preview.fontFamily": "JetBrainsMono Nerd Font",
+  "explorer.confirmDragAndDrop": false,
+  "python.defaultInterpreterPath": "/opt/homebrew/bin/python",
+  "git.openRepositoryInParentFolders": "always",
+  "docker.extension.enableComposeLanguageServer": false,
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "gitlens.ai.model": "gitkraken",
+  "gitlens.ai.gitkraken.model": "gemini:gemini-3-flash-preview",
+  "gitlens.ai.largePromptWarningThreshold": 250000,
+  "gitlens.views.scm.grouped.views": {
+    "commits": true,
+    "branches": true,
+    "remotes": true,
+    "stashes": true,
+    "tags": true,
+    "worktrees": true,
+    "contributors": true,
+    "fileHistory": false,
+    "repositories": true,
+    "searchAndCompare": true,
+    "launchpad": false
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.git/**": true,
+    "**/dist/**": true,
+    "**/.vscode/**": true,
+    "**/.venv/**": true
+  },
+  "git.enableSmartCommit": true,
+  "claudeCode.preferredLocation": "panel",
+  "claudeCode.selectedModel": "default",
+  "git.confirmSync": false,
+  "claudeCode.allowDangerouslySkipPermissions": true,
+  "claudeCode.initialPermissionMode": "bypassPermissions",
+  "terminal.integrated.enablePersistentSessions": false,
+  "diffEditor.renderSideBySide": false,
+  "editor.bracketPairColorization.enabled": false,
+  "python.terminal.useEnvFile": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "chat.disableAIFeatures": true,
+  "workbench.startupEditor": "none",
+  "markdown.preview.fontSize": 12,
+  // --- CORE UI DECLUTTERING ---
+
+// Hide the bottom status bar: Less distraction, more code.
+"workbench.statusBar.visible": false,
+
+// Hide the left-hand Activity Bar: Navigate with the Command Palette.
+// "workbench.activityBar.location": "hidden",
+
+// Control editor tabs: 'single' shows only one tab, preventing tab overload.
+// 'none' hides all tabs for ultimate minimalism (use with caution!).
+
+// Disable Preview Mode: Clicking files opens them as full, persistent tabs.
+"workbench.editor.enablePreview": false,
+
+// Hide the minimap (the scrollable code overview on the right):
+"editor.minimap.enabled": false,
+
+// Disable Code Lens (inline references, Git blame, etc.):
+// Can reduce visual noise and sometimes improve performance.
+"editor.codeLens": false,
+"workbench.editor.showTabs": "none",
+"python.analysis.exclude": [
+    "**/node_modules",
+    "**/.venv",
+    "**/cdk.out",
+    "**/.git"
+],
+"python.analysis.indexing": false, // Disabling indexing can also help
+}
