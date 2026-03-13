@@ -64,8 +64,8 @@ source "$ZSH/oh-my-zsh.sh"
 # 4) Tool Init
 # Load fzf key bindings/completions only for full interactive sessions
 # (avoids zle warnings when running `zsh -i -c ...`).
-if [[ -o interactive && -z "$ZSH_EXECUTION_STRING" && -f "$HOME/.fzf.zsh" ]]; then
-  source "$HOME/.fzf.zsh"
+if [[ -o interactive && -z "$ZSH_EXECUTION_STRING" ]] && (( $+commands[fzf] )); then
+  eval "$(fzf --zsh)"
 fi
 
 # Default file source for fzf if not already set by other configs.
