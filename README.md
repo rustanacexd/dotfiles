@@ -13,6 +13,8 @@ This repo is the source of truth for:
 - `brew-backup.sh`: Dumps current machine state into `Brewfile`
 - `brew-restore.sh`: Installs from `Brewfile`
 - `ghosttyconfig`: Ghostty terminal configuration snapshot
+- `kitty.conf`: Kitty terminal configuration snapshot
+- `open-actions.conf`: Kitty open actions rules snapshot
 - `starship.toml`: Starship prompt configuration
 
 ## Prerequisites
@@ -60,6 +62,7 @@ This repo currently stores raw config snapshots, not an automated symlink/stow s
 
 If you want to apply a file manually:
 - Ghostty: copy/sync `ghosttyconfig` to your Ghostty config location.
+- Kitty: copy/sync `kitty.conf` and `open-actions.conf` to `~/.config/kitty/`.
 - Starship: point `STARSHIP_CONFIG` to this repo file or copy it to your default location.
 
 ## Maintenance Rules
