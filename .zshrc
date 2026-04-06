@@ -35,6 +35,8 @@ export DISABLE_PURE=false
 # Bun install root (bin path added in PATH section).
 export BUN_INSTALL="$HOME/.bun"
 
+export FORCE_AUTOUPDATE_PLUGINS=true
+
 # 2) PATH (deduped, one place)
 # `path` is zsh's array version of PATH; `PATH` is the colon-separated string.
 # `typeset -U path PATH` keeps both unique: duplicate directories are removed
@@ -114,6 +116,13 @@ alias export_gcs_creds='export GOOGLE_APPLICATION_CREDENTIALS="/Users/rustancorp
 # AI CLI shortcuts.
 alias cx="codex --yolo"
 alias cc="claude --dangerously-skip-permissions"
+alias oc="opencode"
+
+# Plugin updates.
+alias update-omos='bun update -g oh-my-opencode-slim'
+
+# Homebrew package update checks (Homebrew-installed packages don't auto-notify)
+alias check-opencode='brew update 2>/dev/null && brew outdated opencode 2>/dev/null || echo "opencode: up to date"'
 
 # 6) Functions
 # Lazy pyenv initialization for faster shell startup.
@@ -167,3 +176,18 @@ ai-cleanup() {
 
 # 7) Local Secrets (not committed)
 [[ -f "$HOME/.zshrc.secrets" ]] && source "$HOME/.zshrc.secrets"
+
+# bun completions
+[ -s "/Users/rustancorpuz/.bun/_bun" ] && source "/Users/rustancorpuz/.bun/_bun"
+
+# browser-use CLI: do not prepend ~/.browser-use-env to PATH globally — it hijacks
+# `python` for every shell. Use `uv run` / project venvs for Python, or activate
+# that env only when working on browser-use.
+
+# pnpm
+export PNPM_HOME="/Users/rustancorpuz/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
