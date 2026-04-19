@@ -115,8 +115,10 @@ alias export_gcs_creds='export GOOGLE_APPLICATION_CREDENTIALS="/Users/rustancorp
 
 # AI CLI shortcuts.
 alias cx="codex --yolo"
-alias cc="claude --dangerously-skip-permissions"
+alias cc="CLAUDE_CODE_AUTO_COMPACT_WINDOW=300000 claude --dangerously-skip-permissions"
 alias oc="opencode"
+alias opencodeconfig="nvim ~/.config/opencode/opencode.json"
+alias opencodeupdate="brew upgrade opencode"
 
 # Plugin updates.
 alias update-omos='bun update -g oh-my-opencode-slim'
@@ -191,3 +193,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# Added by Windsurf
+export PATH="/Users/rustancorpuz/.codeium/windsurf/bin:$PATH"
