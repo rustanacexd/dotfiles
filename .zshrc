@@ -37,6 +37,10 @@ export BUN_INSTALL="$HOME/.bun"
 
 export FORCE_AUTOUPDATE_PLUGINS=true
 
+# Default editor.
+export EDITOR="zed --wait"
+export VISUAL="zed --wait"
+
 # 2) PATH (deduped, one place)
 # `path` is zsh's array version of PATH; `PATH` is the colon-separated string.
 # `typeset -U path PATH` keeps both unique: duplicate directories are removed
@@ -90,8 +94,13 @@ fi
 # Prompt + environment-directory hooks.
 # starship: prompt renderer
 # direnv: auto-loads .envrc per directory
-eval "$(starship init zsh)"
-eval "$(direnv hook zsh)"
+if [[ "$TERM" != dumb ]] && (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi
+
+if (( $+commands[direnv] )); then
+  eval "$(direnv hook zsh)"
+fi
 
 # 5) Aliases
 # Navigation shortcuts.
@@ -112,19 +121,6 @@ alias htop="sudo /Applications/NeoHtop.app/Contents/MacOS/NeoHtop"
 
 # Sets ADC path in current shell for GCP SDK/client usage.
 alias export_gcs_creds='export GOOGLE_APPLICATION_CREDENTIALS="/Users/rustancorpuz/.config/gcloud/application_default_credentials.json"'
-
-# AI CLI shortcuts.
-alias cx="codex --yolo"
-alias cc="CLAUDE_CODE_AUTO_COMPACT_WINDOW=300000 claude --dangerously-skip-permissions"
-alias oc="opencode"
-alias opencodeconfig="nvim ~/.config/opencode/opencode.json"
-alias opencodeupdate="brew upgrade opencode"
-
-# Plugin updates.
-alias update-omos='bun update -g oh-my-opencode-slim'
-
-# Homebrew package update checks (Homebrew-installed packages don't auto-notify)
-alias check-opencode='brew update 2>/dev/null && brew outdated opencode 2>/dev/null || echo "opencode: up to date"'
 
 # 6) Functions
 # Lazy pyenv initialization for faster shell startup.
@@ -148,34 +144,6 @@ cpcommands() {
   find "$src_dir" -maxdepth 1 -name "*.md" ! -name "README.md" -exec cp {} "$dest_dir" \;
 }
 
-# Kill orphaned AI coding agent processes (keeps current session alive)
-ai-cleanup() {
-  # Safety: skips current parent shell process and only targets stale workers.
-  local parent_pid="$PPID"
-  local killed=0
-
-  # Claude Code: kill processes older than 2 hours
-  for pid in $(pgrep -x claude); do
-    [[ "$pid" == "$parent_pid" ]] && continue
-    local etime
-    etime="$(ps -o etime= -p "$pid" 2>/dev/null | xargs)"
-    if echo "$etime" | grep -q -- '-\|^[0-9]\{2,\}:'; then
-      kill "$pid" 2>/dev/null && ((killed++))
-    fi
-  done
-
-  # Codex: kill orphaned codex processes older than 2 hours
-  for pid in $(pgrep -f 'codex' | grep -v "$$"); do
-    local etime
-    etime="$(ps -o etime= -p "$pid" 2>/dev/null | xargs)"
-    if echo "$etime" | grep -q -- '-\|^[0-9]\{2,\}:'; then
-      kill "$pid" 2>/dev/null && ((killed++))
-    fi
-  done
-
-  echo "Cleaned up $killed orphaned AI process(es)."
-}
-
 # 7) Local Secrets (not committed)
 [[ -f "$HOME/.zshrc.secrets" ]] && source "$HOME/.zshrc.secrets"
 
@@ -194,5 +162,17 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-# Added by Windsurf
-export PATH="/Users/rustancorpuz/.codeium/windsurf/bin:$PATH"
+# sentry
+fpath=("/Users/rustancorpuz/.local/share/zsh/site-functions" $fpath)
+
+# >>> codex sentry env >>>
+[ -f "$HOME/.sentry-codex.env" ] && source "$HOME/.sentry-codex.env"
+# <<< codex sentry env <<<
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
