@@ -120,7 +120,7 @@ alias lzd='lazydocker'
 alias htop="sudo /Applications/NeoHtop.app/Contents/MacOS/NeoHtop"
 
 # Sets ADC path in current shell for GCP SDK/client usage.
-alias export_gcs_creds='export GOOGLE_APPLICATION_CREDENTIALS="/Users/rustancorpuz/.config/gcloud/application_default_credentials.json"'
+alias export_gcs_creds='export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/application_default_credentials.json"'
 
 # 6) Functions
 # Lazy pyenv initialization for faster shell startup.
@@ -148,14 +148,14 @@ cpcommands() {
 [[ -f "$HOME/.zshrc.secrets" ]] && source "$HOME/.zshrc.secrets"
 
 # bun completions
-[ -s "/Users/rustancorpuz/.bun/_bun" ] && source "/Users/rustancorpuz/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # browser-use CLI: do not prepend ~/.browser-use-env to PATH globally — it hijacks
 # `python` for every shell. Use `uv run` / project venvs for Python, or activate
 # that env only when working on browser-use.
 
 # pnpm
-export PNPM_HOME="/Users/rustancorpuz/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
@@ -163,7 +163,7 @@ esac
 # pnpm end
 
 # sentry
-fpath=("/Users/rustancorpuz/.local/share/zsh/site-functions" $fpath)
+fpath=("$HOME/.local/share/zsh/site-functions" $fpath)
 
 # >>> codex sentry env >>>
 [ -f "$HOME/.sentry-codex.env" ] && source "$HOME/.sentry-codex.env"
