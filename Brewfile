@@ -6,19 +6,9 @@ tap "cirruslabs/cli", trusted: true
 tap "ddev/ddev"
 tap "derailed/k9s"
 tap "hashicorp/tap"
-tap "heroku/brew"
 tap "hudochenkov/sshpass", trusted: true
-tap "jesseduffield/lazydocker"
 tap "libsql/sqld"
-tap "microsoft/git"
-tap "modem-dev/tap"
-tap "ngrok/ngrok"
-tap "nikitabobko/tap"
 tap "nkzw-tech/tap"
-tap "sst/tap", "https://github.com/anomalyco/homebrew-tap.git"
-tap "steipete/tap"
-tap "teamookla/speedtest"
-tap "tursodatabase/tap"
 # General-purpose data compression with high compression ratio
 brew "xz"
 # Browser automation CLI for AI agents
@@ -173,6 +163,8 @@ brew "yq"
 brew "zoxide"
 # CLI for Amp, the frontier coding agent
 brew "ampcode/tap/ampcode", trusted: true
+# The AI coding agent built for the terminal.
+brew "anomalyco/tap/opencode", trusted: true
 # Run macOS and Linux VMs on Apple Hardware
 brew "cirruslabs/cli/tart", trusted: true
 brew "hudochenkov/sshpass/sshpass", trusted: true
@@ -194,8 +186,6 @@ cask "gitkraken-cli"
 cask "karabiner-elements"
 # Htop on steroids
 cask "neohtop"
-# Reverse proxy, secure introspectable tunnels to localhost
-cask "ngrok"
 # Replacement for Docker Desktop
 cask "orbstack"
 # Control your tools with a few keystrokes
@@ -203,7 +193,9 @@ cask "raycast"
 # Native database client for many database types
 cask "tablepro"
 vscode "alefragnani.project-manager"
+vscode "anthropic.claude-code"
 vscode "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
+vscode "cedricverlinden.cursor-dark"
 vscode "donjayamanne.python-extension-pack"
 vscode "ms-python.debugpy"
 vscode "ms-python.python"
