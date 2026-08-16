@@ -5,14 +5,12 @@ tap "buildpacks/tap"
 tap "cirruslabs/cli", trusted: true
 tap "ddev/ddev"
 tap "derailed/k9s"
+tap "getsentry/tools"
 tap "hashicorp/tap"
 tap "hudochenkov/sshpass", trusted: true
 tap "libsql/sqld"
+tap "manaflow-ai/cmux"
 tap "nkzw-tech/tap"
-# General-purpose data compression with high compression ratio
-brew "xz"
-# Browser automation CLI for AI agents
-brew "agent-browser", link: false
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
 # Code searching, linting, rewriting
@@ -53,6 +51,8 @@ brew "fastmod"
 brew "fd"
 # Play, record, convert, and stream select audio and video codecs
 brew "ffmpeg"
+# General-purpose data compression with high compression ratio
+brew "xz"
 # New file format for still image compression
 brew "jpeg-xl"
 # Subtitle renderer for the ASS/SSA subtitle format
@@ -79,8 +79,6 @@ brew "git-lfs"
 brew "go"
 # Ping, but with a graph
 brew "gping"
-# Agent multiplexer that lives in your terminal
-brew "herdr"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.14"
 # User-friendly cURL replacement (command-line HTTP client)
@@ -161,13 +159,13 @@ brew "worktrunk"
 brew "yq"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# CLI for Amp, the frontier coding agent
-brew "ampcode/tap/ampcode", trusted: true
-# The AI coding agent built for the terminal.
-brew "anomalyco/tap/opencode", trusted: true
 # Run macOS and Linux VMs on Apple Hardware
 brew "cirruslabs/cli/tart", trusted: true
+# Sentry command-line client for some generic tasks
+brew "getsentry/tools/sentry-cli", trusted: true
 brew "hudochenkov/sshpass/sshpass", trusted: true
+# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
+cask "cmux"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # Visual diff tool for Git changes
@@ -192,24 +190,6 @@ cask "orbstack"
 cask "raycast"
 # Native database client for many database types
 cask "tablepro"
-vscode "alefragnani.project-manager"
-vscode "anthropic.claude-code"
-vscode "bpruitt-goddard.mermaid-markdown-syntax-highlighting"
-vscode "cedricverlinden.cursor-dark"
-vscode "donjayamanne.python-extension-pack"
-vscode "ms-python.debugpy"
-vscode "ms-python.python"
-vscode "ms-python.vscode-pylance"
-vscode "ms-python.vscode-python-envs"
-vscode "ms-toolsai.jupyter"
-vscode "ms-toolsai.jupyter-keymap"
-vscode "ms-toolsai.vscode-jupyter-cell-tags"
-vscode "redhat.vscode-yaml"
-vscode "rust-lang.rust-analyzer"
-vscode "sleistner.vscode-fileutils"
-vscode "the0807.uv-toolkit"
-vscode "vscodevim.vim"
-vscode "zainchen.json"
 go "github.com/d-kuro/gwq/cmd/gwq"
 cargo "cargo-audit"
 cargo "cargo-deny"
@@ -228,17 +208,6 @@ uv "poetry", with: ["poetry-plugin-export"]
 uv "posting"
 uv "pre-commit"
 npm "@earendil-works/pi-coding-agent"
-npm "@juicesharp/rpiv-ask-user-question"
-npm "@juicesharp/rpiv-btw"
-npm "@juicesharp/rpiv-todo"
 npm "@mariozechner/gmcli"
 npm "@mermaid-js/mermaid-cli"
-npm "agent-browser"
-npm "pi-codex-fast"
-npm "pi-intercom"
-npm "pi-markdown-preview"
-npm "pi-rtk-optimizer"
-npm "pi-subagents"
-npm "pi-token-speed"
-npm "pi-web-access"
 npm "pnpm"
