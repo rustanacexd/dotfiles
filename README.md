@@ -13,9 +13,10 @@ This repo is the source of truth for:
 - `brew-backup.sh`: Dumps current machine state into `Brewfile`
 - `brew-restore.sh`: Installs from `Brewfile`
 - `ghosttyconfig`: Ghostty terminal configuration snapshot
-- `kitty.conf`: Kitty terminal configuration snapshot
 - `open-actions.conf`: Kitty open actions rules snapshot
 - `starship.toml`: Starship prompt configuration
+- `cmux.json`: cmux settings (symlinked, see below)
+- `worktrunk.toml`: Worktrunk (`wt`) user config, including the cmux workspace hooks (symlinked, see below)
 
 ## Prerequisites
 
@@ -58,12 +59,35 @@ What gets captured in `Brewfile`:
 
 ## Config Files in This Repo
 
-This repo currently stores raw config snapshots, not an automated symlink/stow system.
+Two kinds of file live here.
 
-If you want to apply a file manually:
-- Ghostty: copy/sync `ghosttyconfig` to your Ghostty config location.
-- Kitty: copy/sync `kitty.conf` and `open-actions.conf` to `~/.config/kitty/`.
-- Starship: point `STARSHIP_CONFIG` to this repo file or copy it to your default location.
+**Symlinked (live).** The real file sits in this repo and the config location is
+a symlink to it, so editing either one edits the same file and nothing can drift:
+
+| Repo file | Symlinked from |
+|---|---|
+| `cmux.json` | `~/.config/cmux/cmux.json` |
+| `worktrunk.toml` | `~/.config/worktrunk/config.toml` |
+
+To set these up on a new machine:
+
+```bash
+mkdir -p ~/.config/cmux ~/.config/worktrunk
+ln -s ~/code/dotfiles/cmux.json     ~/.config/cmux/cmux.json
+ln -s ~/code/dotfiles/worktrunk.toml ~/.config/worktrunk/config.toml
+chmod 600 ~/code/dotfiles/cmux.json
+```
+
+The `chmod` is needed because git only records the executable bit, so a fresh
+clone gives `cmux.json` default permissions rather than the `600` it has here.
+There are no secrets in the file, so this is tidiness rather than a real risk.
+
+**Snapshots (copies).** These are point-in-time copies and can go stale. Apply
+by hand:
+
+- Ghostty: copy `ghosttyconfig` to your Ghostty config location.
+- Kitty: copy `open-actions.conf` to `~/.config/kitty/`.
+- Starship: point `STARSHIP_CONFIG` at this repo's file, or copy it.
 
 ## Maintenance Rules
 
