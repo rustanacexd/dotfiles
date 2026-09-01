@@ -38,8 +38,8 @@ export BUN_INSTALL="$HOME/.bun"
 export FORCE_AUTOUPDATE_PLUGINS=true
 
 # Default editor.
-export EDITOR="code --wait"
-export VISUAL="code --wait"
+export EDITOR="zed --wait"
+export VISUAL="zed --wait"
 
 # 2) PATH (deduped, one place)
 # `path` is zsh's array version of PATH; `PATH` is the colon-separated string.
@@ -118,6 +118,7 @@ alias fsize='du -hs'
 alias lg='lazygit'
 alias lzd='lazydocker'
 alias htop="sudo /Applications/NeoHtop.app/Contents/MacOS/NeoHtop"
+alias claude="claude --dangerously-skip-permissions"
 
 # Sets ADC path in current shell for GCP SDK/client usage.
 alias export_gcs_creds='export GOOGLE_APPLICATION_CREDENTIALS="/Users/rustancorpuz/.config/gcloud/application_default_credentials.json"'
@@ -157,16 +158,26 @@ cpcommands() {
 # pnpm
 export PNPM_HOME="/Users/rustancorpuz/Library/pnpm"
 case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# Legacy shim dir from an older pnpm layout. Remove once the leftover shims
+# directly in $PNPM_HOME are gone, or they shadow the ones in $PNPM_HOME/bin.
+case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *) export PATH="$PATH:$PNPM_HOME" ;;
 esac
 # pnpm end
 
 # sentry
 fpath=("/Users/rustancorpuz/.local/share/zsh/site-functions" $fpath)
 
-# >>> codex sentry env >>>
-[ -f "$HOME/.sentry-codex.env" ] && source "$HOME/.sentry-codex.env"
-# <<< codex sentry env <<<
-
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+
+# Added by Devin
+export PATH="/Users/rustancorpuz/.codeium/windsurf/bin:$PATH"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/rustancorpuz/.local/bin:$PATH"
