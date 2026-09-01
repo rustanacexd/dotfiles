@@ -12,22 +12,39 @@ json-schema = 2
 [commit.generation]
 command = "MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --safe-mode --setting-sources='user' --system-prompt=''"
 
-# One cmux workspace per worktree, titled <repo>/<branch>.
+# One cmux workspace per worktree you create by hand, titled <repo>/<branch>.
+#
+# The guard skips agents. cmux exports CMUX_AGENT_LAUNCH_KIND only in panels it
+# launched as an agent, and `wt` inherits it, so an agent running
+# `wt switch --create` no longer yanks focus into a workspace nobody asked for.
+# Agent worktrees get no workspace at all -- pre-switch only selects existing
+# ones -- so `wt switch` to one falls back to the [switch] cd above.
+#
 # Hooks must stay pre-*: cmux only allows socket access from processes spawned
 # inside a cmux terminal, and post-* hooks run detached, breaking that lineage.
 [pre-start]
-cmux = "cmux workspace create --name {{ repo | sanitize }}/{{ branch | sanitize }} --cwd {{ worktree_path }} --focus true"
+cmux = """
+[ -n "$CMUX_AGENT_LAUNCH_KIND" ] || cmux workspace create \\
+  --name {{ repo | sanitize }}/{{ branch | sanitize }} \\
+  --cwd {{ worktree_path }} --focus true
+"""
 
 # Match on title OR directory. Title catches workspaces this config created;
 # directory catches ones you opened by hand, whose auto-generated titles drift
 # as cmux renames them.
+#
+# Same agent guard as pre-start: an agent switching worktrees must not drag your
+# view to another workspace. It still gets the [switch] cd, which is all it
+# needs.
 [pre-switch]
 cmux = """
-WS=$(cmux --json workspace list 2>/dev/null \\
-  | jq -r --arg t '{{ repo | sanitize }}/{{ branch | sanitize }}' \\
-        --arg p '{{ worktree_path }}' \\
-      '.workspaces[] | select(.title == $t or .current_directory == $p) | .ref' | head -1)
-[ -n "$WS" ] && cmux workspace select --workspace "$WS" || true
+if [ -z "$CMUX_AGENT_LAUNCH_KIND" ]; then
+  WS=$(cmux --json workspace list 2>/dev/null \\
+    | jq -r --arg t '{{ repo | sanitize }}/{{ branch | sanitize }}' \\
+          --arg p '{{ worktree_path }}' \\
+        '.workspaces[] | select(.title == $t or .current_directory == $p) | .ref' | head -1)
+  [ -n "$WS" ] && cmux workspace select --workspace "$WS" || true
+fi
 """
 
 # Never close the workspace we're running in. User hooks run before project
