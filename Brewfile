@@ -11,6 +11,7 @@ tap "hudochenkov/sshpass", trusted: true
 tap "libsql/sqld"
 tap "manaflow-ai/cmux"
 tap "nkzw-tech/tap"
+tap "teamookla/speedtest", trusted: true
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
 # Code searching, linting, rewriting
@@ -164,14 +165,14 @@ brew "cirruslabs/cli/tart", trusted: true
 # Sentry command-line client for some generic tasks
 brew "getsentry/tools/sentry-cli", trusted: true
 brew "hudochenkov/sshpass/sshpass", trusted: true
+# Ookla Speedtest
+brew "teamookla/speedtest/speedtest"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 cask "cmux"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # Visual diff tool for Git changes
 cask "nkzw-tech/tap/codiff", trusted: true
-# Offline voice-to-text dictation app with AI enhancement
-cask "fluidvoice"
 cask "font-monaspace"
 cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
