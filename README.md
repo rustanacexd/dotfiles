@@ -15,8 +15,7 @@ This repo is the source of truth for:
 - `ghosttyconfig`: Ghostty terminal configuration snapshot
 - `open-actions.conf`: Kitty open actions rules snapshot
 - `starship.toml`: Starship prompt configuration
-- `cmux.json`: cmux settings (symlinked, see below)
-- `worktrunk.toml`: Worktrunk (`wt`) user config, including the cmux workspace hooks (symlinked, see below)
+- `worktrunk.toml`: Worktrunk (`wt`) user config (symlinked, see below)
 
 ## Prerequisites
 
@@ -66,21 +65,14 @@ a symlink to it, so editing either one edits the same file and nothing can drift
 
 | Repo file | Symlinked from |
 |---|---|
-| `cmux.json` | `~/.config/cmux/cmux.json` |
 | `worktrunk.toml` | `~/.config/worktrunk/config.toml` |
 
 To set these up on a new machine:
 
 ```bash
-mkdir -p ~/.config/cmux ~/.config/worktrunk
-ln -s ~/code/dotfiles/cmux.json     ~/.config/cmux/cmux.json
+mkdir -p ~/.config/worktrunk
 ln -s ~/code/dotfiles/worktrunk.toml ~/.config/worktrunk/config.toml
-chmod 600 ~/code/dotfiles/cmux.json
 ```
-
-The `chmod` is needed because git only records the executable bit, so a fresh
-clone gives `cmux.json` default permissions rather than the `600` it has here.
-There are no secrets in the file, so this is tidiness rather than a real risk.
 
 **Snapshots (copies).** These are point-in-time copies and can go stale. Apply
 by hand:

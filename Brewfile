@@ -9,7 +9,6 @@ tap "getsentry/tools"
 tap "hashicorp/tap"
 tap "hudochenkov/sshpass", trusted: true
 tap "libsql/sqld"
-tap "manaflow-ai/cmux"
 tap "nkzw-tech/tap"
 tap "teamookla/speedtest", trusted: true
 # Codec library for encoding and decoding AV1 video streams
@@ -168,7 +167,6 @@ brew "hudochenkov/sshpass/sshpass", trusted: true
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
-cask "cmux"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
 # Visual diff tool for Git changes
