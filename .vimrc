@@ -12,5 +12,4 @@ autocmd FileType markdown syn region markdownItalic start="\*\S" end="\S\*" keep
 autocmd FileType markdown syn region markdownBold start="\*\*\S" end="\S\*\*" keepend
 autocmd FileType markdown syntax match Normal "_" containedin=ALL
 
-
 set clipboard=unnamed

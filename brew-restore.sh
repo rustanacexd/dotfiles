@@ -27,7 +27,6 @@ echo "📋 Brewfile contains:"
 echo "   • Taps: $(grep -c '^tap ' "$BREWFILE")"
 echo "   • Formulas: $(grep -c '^brew ' "$BREWFILE")"
 echo "   • Casks: $(grep -c '^cask ' "$BREWFILE")"
-echo "   • VSCode Extensions: $(grep -c '^vscode ' "$BREWFILE")"
 echo ""
 
 # Install everything from Brewfile

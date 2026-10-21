@@ -9,8 +9,12 @@ tap "getsentry/tools"
 tap "hashicorp/tap"
 tap "hudochenkov/sshpass", trusted: true
 tap "libsql/sqld"
-tap "nkzw-tech/tap"
+tap "nkzw-tech/tap", trusted: { casks: ["codiff"] }
 tap "teamookla/speedtest", trusted: true
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
+# Static checker for GitHub Actions workflow files
+brew "actionlint"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
 # Code searching, linting, rewriting
@@ -83,8 +87,8 @@ brew "gping"
 brew "python@3.14"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
-# Review-first terminal diff viewer for agent-authored changesets
-brew "hunk"
+# Command-line benchmarking tool
+brew "hyperfine"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick-full"
 # Lightweight and flexible command-line JSON processor
@@ -137,8 +141,6 @@ brew "ripgrep"
 brew "ruff"
 # 7-Zip is a file archiver with a high compression ratio
 brew "sevenzip"
-# Static analysis and lint tool, for (ba)sh scripts
-brew "shellcheck"
 # Cross-shell prompt for astronauts
 brew "starship"
 # Terminal multiplexer
@@ -166,11 +168,8 @@ brew "getsentry/tools/sentry-cli", trusted: true
 brew "hudochenkov/sshpass/sshpass", trusted: true
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
-# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
-# Visual diff tool for Git changes
-cask "nkzw-tech/tap/codiff", trusted: true
 cask "font-monaspace"
 cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
@@ -187,6 +186,8 @@ cask "neohtop"
 cask "orbstack"
 # Control your tools with a few keystrokes
 cask "raycast"
+# Minimal GUI for AI code agents
+cask "t3-code@nightly"
 # Native database client for many database types
 cask "tablepro"
 go "github.com/d-kuro/gwq/cmd/gwq"
@@ -203,10 +204,8 @@ cargo "rustlings"
 cargo "sccache"
 cargo "sqlx-cli"
 cargo "tokio-console"
+uv "claude-swap"
 uv "poetry", with: ["poetry-plugin-export"]
 uv "posting"
 uv "pre-commit"
-npm "@earendil-works/pi-coding-agent"
-npm "@mariozechner/gmcli"
-npm "@mermaid-js/mermaid-cli"
-npm "pnpm"
+npm "corepack"

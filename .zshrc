@@ -132,19 +132,6 @@ pyenv() {
   pyenv "$@"
 }
 
-cpcommands() {
-  # Copy markdown commands from Claude commands dir into a destination dir.
-  local dest_dir="$1"
-  local src_dir="$HOME/.claude/commands"
-
-  if [[ -z "$dest_dir" ]]; then
-    echo "Usage: cpcommands <destination-directory>"
-    return 1
-  fi
-
-  find "$src_dir" -maxdepth 1 -name "*.md" ! -name "README.md" -exec cp {} "$dest_dir" \;
-}
-
 # 7) Local Secrets (not committed)
 [[ -f "$HOME/.zshrc.secrets" ]] && source "$HOME/.zshrc.secrets"
 

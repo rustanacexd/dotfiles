@@ -4,18 +4,19 @@ Personal macOS setup assets and Homebrew state backups.
 
 This repo is the source of truth for:
 - Homebrew packages/apps/taps/extensions (`Brewfile`)
-- Terminal prompt and app config snapshots
-- Repeatable backup/restore scripts for Homebrew
+- Shell, terminal, and prompt configs, symlinked into place
+- One sync command plus backup/restore scripts for Homebrew
 
 ## Repository Layout
 
 - `Brewfile`: Managed package list for `brew bundle` (taps, formulas, casks, VS Code extensions, and additional bundle entries)
 - `brew-backup.sh`: Dumps current machine state into `Brewfile`
 - `brew-restore.sh`: Installs from `Brewfile`
-- `ghosttyconfig`: Ghostty terminal configuration snapshot
-- `open-actions.conf`: Kitty open actions rules snapshot
+- `sync.sh`: Links configs, backs up Homebrew, validates, and optionally commits
+- `.zshrc`, `.vimrc`, `.tmux.conf`: Shell, Vim, and tmux configs
+- `ghosttyconfig`: Ghostty terminal configuration
 - `starship.toml`: Starship prompt configuration
-- `worktrunk.toml`: Worktrunk (`wt`) user config (symlinked, see below)
+- `worktrunk.toml`: Worktrunk (`wt`) user config
 
 ## Prerequisites
 
@@ -34,57 +35,51 @@ Install Homebrew if missing:
 git clone <your-repo-url> ~/code/dotfiles
 cd ~/code/dotfiles
 ./brew-restore.sh
+./sync.sh
 ```
 
 Notes:
 - `brew-restore.sh` resolves `Brewfile` relative to the script path, so it can be run from any directory.
 - Restore can take a while depending on casks/formulas.
+- Run `brew-restore.sh` before `sync.sh`. Sync rewrites `Brewfile` from the installed packages, so running it first on a bare machine would empty the list.
 
-## Homebrew Workflow (Day 2+)
+## Sync Workflow (Day 2+)
 
-When you install/remove tooling on your machine and want this repo updated:
+One command updates the repo from this machine:
 
 ```bash
-./brew-backup.sh
-git diff Brewfile
-git add Brewfile
-git commit -m "chore(brew): update Brewfile"
+./sync.sh            # link configs, dump Brewfile, validate, scan for secrets, show status
+./sync.sh --commit   # same, then commit any changes
 ```
 
-What gets captured in `Brewfile`:
-- `tap`: additional formula repositories
-- `brew`: CLI packages and libraries
-- `cask`: GUI applications
+`sync.sh` never pushes. Review the commit and push it yourself.
 
-## Config Files in This Repo
+What it does, in order:
+1. Symlinks each config into its live location. A path that is already linked is skipped. A real file found at a live path is moved to `<path>.bak.<timestamp>` first.
+2. Runs `brew-backup.sh`, which rewrites `Brewfile` with `brew bundle dump`.
+3. Checks `bash -n` and `shellcheck` on the scripts, `zsh -n .zshrc`, and `git diff --check`.
+4. Scans the repo with `trufflehog` (offline, no verification) and stops on any finding.
+5. With `--commit`, commits everything as `chore(sync): update dotfiles` if anything changed.
 
-Two kinds of file live here.
+## Config Files
 
-**Symlinked (live).** The real file sits in this repo and the config location is
-a symlink to it, so editing either one edits the same file and nothing can drift:
+Every config is symlinked: the real file sits in this repo and the live path points to it, so editing either edits the same file.
 
-| Repo file | Symlinked from |
+| Repo file | Live path |
 |---|---|
+| `.zshrc` | `~/.zshrc` |
+| `.vimrc` | `~/.vimrc` |
+| `.tmux.conf` | `~/.tmux.conf` |
+| `ghosttyconfig` | `~/.config/ghostty/config` |
+| `starship.toml` | `~/.config/starship.toml` |
 | `worktrunk.toml` | `~/.config/worktrunk/config.toml` |
 
-To set these up on a new machine:
-
-```bash
-mkdir -p ~/.config/worktrunk
-ln -s ~/code/dotfiles/worktrunk.toml ~/.config/worktrunk/config.toml
-```
-
-**Snapshots (copies).** These are point-in-time copies and can go stale. Apply
-by hand:
-
-- Ghostty: copy `ghosttyconfig` to your Ghostty config location.
-- Kitty: copy `open-actions.conf` to `~/.config/kitty/`.
-- Starship: point `STARSHIP_CONFIG` at this repo's file, or copy it.
+To track another config, add it to the `LINKS` table in `sync.sh` and to this table.
 
 ## Maintenance Rules
 
-- After package changes, run `./brew-backup.sh` and commit `Brewfile`.
-- Before wiping/reprovisioning a machine, run `./brew-backup.sh` one last time.
+- After package or config changes, run `./sync.sh --commit`.
+- Before wiping/reprovisioning a machine, run `./sync.sh --commit` and push.
 - Keep this README aligned with actual files in this repo.
 
 ## Troubleshooting
