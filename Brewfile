@@ -155,8 +155,6 @@ brew "uv"
 brew "vite"
 # Internet file retriever
 brew "wget"
-# CLI for Git worktree management, designed for parallel AI agent workflows
-brew "worktrunk"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
 brew "yq"
 # Shell extension to navigate your filesystem faster

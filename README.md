@@ -16,7 +16,6 @@ This repo is the source of truth for:
 - `.zshrc`, `.vimrc`, `.tmux.conf`: Shell, Vim, and tmux configs
 - `ghosttyconfig`: Ghostty terminal configuration
 - `starship.toml`: Starship prompt configuration
-- `worktrunk.toml`: Worktrunk (`wt`) user config
 
 ## Prerequisites
 
@@ -72,7 +71,6 @@ Every config is symlinked: the real file sits in this repo and the live path poi
 | `.tmux.conf` | `~/.tmux.conf` |
 | `ghosttyconfig` | `~/.config/ghostty/config` |
 | `starship.toml` | `~/.config/starship.toml` |
-| `worktrunk.toml` | `~/.config/worktrunk/config.toml` |
 
 To track another config, add it to the `LINKS` table in `sync.sh` and to this table.
 

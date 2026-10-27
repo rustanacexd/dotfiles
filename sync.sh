@@ -14,7 +14,6 @@ LINKS=(
     ".tmux.conf:$HOME/.tmux.conf"
     "ghosttyconfig:$HOME/.config/ghostty/config"
     "starship.toml:$HOME/.config/starship.toml"
-    "worktrunk.toml:$HOME/.config/worktrunk/config.toml"
 )
 
 COMMIT=false
