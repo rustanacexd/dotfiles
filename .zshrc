@@ -159,8 +159,6 @@ esac
 # sentry
 fpath=("/Users/rustancorpuz/.local/share/zsh/site-functions" $fpath)
 
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
-
 
 # Added by Devin
 export PATH="/Users/rustancorpuz/.codeium/windsurf/bin:$PATH"

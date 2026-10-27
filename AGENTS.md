@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This repository is a flat collection of macOS setup files. `Brewfile` is the package manifest; `brew-backup.sh` regenerates it from the current machine, and `brew-restore.sh` installs it. `sync.sh` symlinks each config into its live location and runs the backup and checks in one step. The configs live at the repository root: `.zshrc`, `.vimrc`, `.tmux.conf`, `ghosttyconfig`, `starship.toml`, and `worktrunk.toml`. The live paths are symlinks to these files, so edit the repo copy. There are no generated source directories, assets, or test folders.
+This repository is a flat collection of macOS setup files. `Brewfile` is the package manifest; `brew-backup.sh` regenerates it from the current machine, and `brew-restore.sh` installs it. `sync.sh` symlinks each config into its live location and runs the backup and checks in one step. The configs live at the repository root: `.zshrc`, `.vimrc`, `.tmux.conf`, `ghosttyconfig`, and `starship.toml`. The live paths are symlinks to these files, so edit the repo copy. There are no generated source directories, assets, or test folders.
 
 ## Build, Test, and Development Commands
 
