@@ -33,33 +33,27 @@ Managed with three standard tools:
 └── ~/.zshrc.secrets                      # AWS + Gemini keys (local only, never committed)
 ```
 
-### How sync works (both directions)
+### How sync works
+
+**Save your Mac's changes to GitHub:**
 
 ```mermaid
 flowchart LR
-    subgraph Mac["Your Mac (~)"]
-        Brew["brew install ..."]
-        Mise["mise use -g ..."]
-        Edit["Edit ~/.zshrc, ~/.tmux.conf, ..."]
-    end
+    A["1. Change your Mac\nbrew install / mise use -g / edit ~/.zshrc"]
+    B["2. Snapshot Homebrew\nbrew bundle dump --global --force"]
+    C["3. Copy changes to repo\nchezmoi re-add"]
+    D["4. Commit & push\nchezmoi git -- commit & push"]
+    A --> B --> C --> D
+```
 
-    subgraph Repo["~/.local/share/chezmoi"]
-        Brewfile["dot_Brewfile"]
-        MiseToml["dot_config/mise/config.toml"]
-        Dots["dot_* files"]
-        Hooks["run_onchange hooks"]
-    end
+**Apply GitHub changes to a Mac (existing or brand new):**
 
-    GH["github.com/rustanacexd/dotfiles"]
-
-    Brew -->|"brew bundle dump --global --force"| Brewfile
-    Mise -->|"writes config.toml directly"| MiseToml
-    Edit -->|"chezmoi re-add"| Dots
-    Brewfile & MiseToml & Dots -->|"chezmoi git -- commit & push"| GH
-
-    GH -->|"chezmoi init --apply rustanacexd\n(or chezmoi update)"| Repo
-    Repo -->|"writes real files to ~"| Mac
-    Hooks -->|"if Brewfile or mise.toml changed:\nbrew bundle + mise install"| Mac
+```mermaid
+flowchart LR
+    G["GitHub\nrustanacexd/dotfiles"]
+    C["chezmoi update\n(new Mac: chezmoi init --apply rustanacexd)"]
+    M["Writes files to ~\n+ runs brew bundle & mise install"]
+    G --> C --> M
 ```
 
 ### What runs when you open a terminal
