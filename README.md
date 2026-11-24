@@ -37,23 +37,19 @@ Managed with three standard tools:
 
 **Save your Mac's changes to GitHub:**
 
-```mermaid
-flowchart LR
-    A["1. Change your Mac\nbrew install / mise use -g / edit ~/.zshrc"]
-    B["2. Snapshot Homebrew\nbrew bundle dump --global --force"]
-    C["3. Copy changes to repo\nchezmoi re-add"]
-    D["4. Commit & push\nchezmoi git -- commit & push"]
-    A --> B --> C --> D
+```text
+1. Change your Mac        2. Snapshot Homebrew               3. Copy to repo       4. Push to GitHub
+   brew install ...   ──►    brew bundle dump --global -f ──►   chezmoi re-add ──►    chezmoi git -- commit & push
+   mise use -g ...
+   edit ~/.zshrc
 ```
 
 **Apply GitHub changes to a Mac (existing or brand new):**
 
-```mermaid
-flowchart LR
-    G["GitHub\nrustanacexd/dotfiles"]
-    C["chezmoi update\n(new Mac: chezmoi init --apply rustanacexd)"]
-    M["Writes files to ~\n+ runs brew bundle & mise install"]
-    G --> C --> M
+```text
+GitHub                        Pull & apply                                 Your Mac (~)
+rustanacexd/dotfiles   ──►    chezmoi update                        ──►    Writes files to ~
+                              (new Mac: chezmoi init --apply ...)          + runs brew bundle & mise install
 ```
 
 ### What runs when you open a terminal
