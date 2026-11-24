@@ -1,0 +1,40 @@
+# Shared environment for all zsh invocations (including scripts and agents).
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+
+export EDITOR="zed --wait"
+export VISUAL="zed --wait"
+export PNPM_HOME="$HOME/Library/pnpm"
+export HYPERFRAMES_PYTHON="$HOME/.venvs/hyperframes-kokoro/bin/python"
+
+# Keep `brew bundle dump --global --force` focused on Homebrew + Cargo.
+export HOMEBREW_BUNDLE_FILE_GLOBAL="$HOME/.Brewfile"
+export HOMEBREW_BUNDLE_NO_DESCRIBE=1
+export HOMEBREW_BUNDLE_DUMP_NO_VSCODE=1
+export HOMEBREW_BUNDLE_DUMP_NO_MAS=1
+export HOMEBREW_BUNDLE_DUMP_NO_GO=1
+export HOMEBREW_BUNDLE_DUMP_NO_UV=1
+export HOMEBREW_BUNDLE_DUMP_NO_NPM=1
+
+typeset -U path PATH
+path=(
+  "$HOME/.local/share/mise/shims"
+  "$HOME/.local/bin"
+  "$HOME/.opencode/bin"
+  "$PNPM_HOME"
+  "$HOME/.cargo/bin"
+  "$HOME/go/bin"
+  "$HOME/.orbstack/bin"
+  "$HOME/.codeium/windsurf/bin"
+  /opt/homebrew/opt/openssl@3/bin
+  /opt/homebrew/opt/ffmpeg-full/bin
+  /opt/homebrew/opt/imagemagick-full/bin
+  /opt/homebrew/share/google-cloud-sdk/bin
+  /opt/homebrew/bin
+  /opt/homebrew/sbin
+  $path
+)
+export PATH
+
+[[ -r "$HOME/.zshenv.secrets" ]] && source "$HOME/.zshenv.secrets"

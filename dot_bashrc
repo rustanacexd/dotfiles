@@ -1,0 +1,13 @@
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export PNPM_HOME="$HOME/Library/pnpm"
+
+export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$HOME/.opencode/bin:$PNPM_HOME:$HOME/.cargo/bin:$HOME/go/bin:$HOME/.orbstack/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+
+[[ -r "$HOME/.zshenv.secrets" ]] && source "$HOME/.zshenv.secrets"
+
+if [[ $- == *i* ]]; then
+  command -v mise >/dev/null 2>&1 && eval "$(mise activate bash)"
+  command -v wt >/dev/null 2>&1 && eval "$(command wt config shell init bash)"
+  [[ -r "$HOME/.zshrc.secrets" ]] && source "$HOME/.zshrc.secrets"
+fi

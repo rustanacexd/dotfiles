@@ -1,0 +1,25 @@
+# Login shell setup (runs after macOS /etc/zprofile path_helper).
+[[ -x /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Re-assert user tool precedence ahead of macOS system paths.
+typeset -U path PATH
+path=(
+  "$HOME/.local/share/mise/shims"
+  "$HOME/.local/bin"
+  "$HOME/.opencode/bin"
+  "$PNPM_HOME"
+  "$HOME/.cargo/bin"
+  "$HOME/go/bin"
+  "$HOME/.orbstack/bin"
+  "$HOME/.codeium/windsurf/bin"
+  /opt/homebrew/opt/openssl@3/bin
+  /opt/homebrew/opt/ffmpeg-full/bin
+  /opt/homebrew/opt/imagemagick-full/bin
+  /opt/homebrew/share/google-cloud-sdk/bin
+  /opt/homebrew/bin
+  /opt/homebrew/sbin
+  $path
+)
+export PATH
+
+[[ -d "$HOME/.orbstack/shell/completions/zsh" ]] && fpath+=("$HOME/.orbstack/shell/completions/zsh")

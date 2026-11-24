@@ -1,0 +1,15 @@
+#!/bin/sh
+# Brewfile hash: {{ include "dot_Brewfile" | sha256sum }}
+# mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+set -eu
+
+git -C "{{ .chezmoi.sourceDir }}" config core.hooksPath .githooks || true
+
+if [ -x /opt/homebrew/bin/brew ]; then
+    /opt/homebrew/bin/brew bundle --file="$HOME/.Brewfile" --no-upgrade
+fi
+
+if [ -x /opt/homebrew/bin/mise ]; then
+    /opt/homebrew/bin/mise trust "$HOME/.config/mise/config.toml"
+    /opt/homebrew/bin/mise install
+fi

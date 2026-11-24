@@ -1,0 +1,14 @@
+[".oh-my-zsh"]
+    type = "git-repo"
+    url = "https://github.com/ohmyzsh/ohmyzsh.git"
+    refreshPeriod = "168h"
+
+[".oh-my-zsh/custom/plugins/fzf-tab"]
+    type = "git-repo"
+    url = "https://github.com/Aloxaf/fzf-tab.git"
+    refreshPeriod = "168h"
+
+[".oh-my-zsh/custom/plugins/zsh-bat"]
+    type = "git-repo"
+    url = "https://github.com/fdellwing/zsh-bat.git"
+    refreshPeriod = "168h"

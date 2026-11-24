@@ -1,87 +1,48 @@
 # Dotfiles
 
-Personal macOS setup assets and Homebrew state backups.
+Managed with standard tools:
 
-This repo is the source of truth for:
-- Homebrew packages/apps/taps/extensions (`Brewfile`)
-- Shell, terminal, and prompt configs, symlinked into place
-- One sync command plus backup/restore scripts for Homebrew
+- **chezmoi** for dotfiles, shell configs, Oh My Zsh plugins, and LaunchAgents
+- **Homebrew (`~/.Brewfile`)** for macOS apps, CLI tools, and Cargo crates
+- **mise (`~/.config/mise/config.toml`)** for language runtimes (`python`, `node`, `bun`, `go`, `java`) and global `npm`, `pypi`, and `go` CLIs
 
-## Repository Layout
+## Day-to-day workflow (machine → repo)
 
-- `Brewfile`: Managed package list for `brew bundle` (taps, formulas, casks, VS Code extensions, and additional bundle entries)
-- `brew-backup.sh`: Dumps current machine state into `Brewfile`
-- `brew-restore.sh`: Installs from `Brewfile`
-- `sync.sh`: Links configs, backs up Homebrew, validates, and optionally commits
-- `.zshrc`, `.vimrc`, `.tmux.conf`: Shell, Vim, and tmux configs
-- `ghosttyconfig`: Ghostty terminal configuration
-- `starship.toml`: Starship prompt configuration
+```sh
+# Pull edited dotfiles and mise.toml changes back into the repo
+chezmoi diff
+chezmoi re-add
 
-## Prerequisites
+# Snapshot Homebrew packages into ~/.Brewfile, then pull into the repo
+brew bundle dump --global --force && chezmoi re-add ~/.Brewfile
 
-- macOS
-- Homebrew installed and available on `PATH`
-
-Install Homebrew if missing:
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Commit and push
+chezmoi git -- add -A
+chezmoi git -- commit -m "chore: sync dotfiles"
+chezmoi git -- push
 ```
 
-## Quick Start (New Machine)
+When installing new language tools, use `mise use -g` so `~/.config/mise/config.toml` updates automatically:
 
-```bash
-git clone <your-repo-url> ~/code/dotfiles
-cd ~/code/dotfiles
-./brew-restore.sh
-./sync.sh
+```sh
+mise use -g npm:vercel
+mise use -g pypi:posting
+chezmoi re-add ~/.config/mise/config.toml
 ```
 
-Notes:
-- `brew-restore.sh` resolves `Brewfile` relative to the script path, so it can be run from any directory.
-- Restore can take a while depending on casks/formulas.
-- Run `brew-restore.sh` before `sync.sh`. Sync rewrites `Brewfile` from the installed packages, so running it first on a bare machine would empty the list.
+## New Mac setup
 
-## Sync Workflow (Day 2+)
-
-One command updates the repo from this machine:
-
-```bash
-./sync.sh            # link configs, dump Brewfile, validate, scan for secrets, show status
-./sync.sh --commit   # same, then commit any changes
-```
-
-`sync.sh` never pushes. Review the commit and push it yourself.
-
-What it does, in order:
-1. Symlinks each config into its live location. A path that is already linked is skipped. A real file found at a live path is moved to `<path>.bak.<timestamp>` first.
-2. Runs `brew-backup.sh`, which rewrites `Brewfile` with `brew bundle dump`.
-3. Checks `bash -n` and `shellcheck` on the scripts, `zsh -n .zshrc`, and `git diff --check`.
-4. Scans the repo with `trufflehog` (offline, no verification) and stops on any finding.
-5. With `--commit`, commits everything as `chore(sync): update dotfiles` if anything changed.
-
-## Config Files
-
-Every config is symlinked: the real file sits in this repo and the live path points to it, so editing either edits the same file.
-
-| Repo file | Live path |
-|---|---|
-| `.zshrc` | `~/.zshrc` |
-| `.vimrc` | `~/.vimrc` |
-| `.tmux.conf` | `~/.tmux.conf` |
-| `ghosttyconfig` | `~/.config/ghostty/config` |
-| `starship.toml` | `~/.config/starship.toml` |
-
-To track another config, add it to the `LINKS` table in `sync.sh` and to this table.
-
-## Maintenance Rules
-
-- After package or config changes, run `./sync.sh --commit`.
-- Before wiping/reprovisioning a machine, run `./sync.sh --commit` and push.
-- Keep this README aligned with actual files in this repo.
-
-## Troubleshooting
-
-- `Brewfile not found`: ensure the repo still contains `Brewfile`.
-- `brew: command not found`: install Homebrew and re-open shell.
-- Partial restore failures: re-run `./brew-restore.sh`; `brew bundle` is designed to be repeatable.
+1. Install Homebrew from https://brew.sh.
+2. Install `chezmoi` and apply this repo (runs `brew bundle` and `mise install` automatically):
+   ```sh
+   brew install chezmoi
+   chezmoi init --apply rustanacexd
+   ```
+3. Install vendor tools that manage themselves:
+   - `rustup`: `curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --no-modify-path`
+   - Claude Code: `curl -fsSL https://claude.ai/install.sh | bash`
+   - Zed: `curl -fsSL https://zed.dev/install.sh | sh`
+4. Recreate local secret files (never committed):
+   - `~/.zshenv.secrets` (mode 600): `export EXA_API_KEY=...`
+   - `~/.zshrc.secrets` (mode 600): `export AWS_ACCESS_KEY_ID=...`, `AWS_SECRET_ACCESS_KEY`, `GEMINI_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`
+5. Open OrbStack and Karabiner-Elements once to finish permissions, then log out and back in.

@@ -1,0 +1,14 @@
+#!/bin/sh
+# gui-env hash: {{ include "private_Library/private_LaunchAgents/com.rustan.gui-env.plist" | sha256sum }}
+# right-command hash: {{ include "private_Library/private_LaunchAgents/com.rustan.right-command-to-control.plist" | sha256sum }}
+set -eu
+
+domain="gui/$(id -u)"
+for plist in \
+    "$HOME/Library/LaunchAgents/com.rustan.gui-env.plist" \
+    "$HOME/Library/LaunchAgents/com.rustan.right-command-to-control.plist"
+do
+    [ -f "$plist" ] || continue
+    /bin/launchctl bootout "$domain" "$plist" 2>/dev/null || true
+    /bin/launchctl bootstrap "$domain" "$plist"
+done

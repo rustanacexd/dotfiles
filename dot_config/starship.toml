@@ -156,6 +156,8 @@ symbol = "lua "
 
 [nodejs]
 symbol = "nodejs "
+# A stray ~/node_modules made every prompt in $HOME run `node --version`.
+detect_folders = []
 
 [memory_usage]
 symbol = "memory "
