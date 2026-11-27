@@ -89,8 +89,8 @@ alias x='exit'
 alias fsize='du -hs'
 alias lg='lazygit'
 alias htop="sudo /Applications/NeoHtop.app/Contents/MacOS/NeoHtop"
-alias claude="claude --dangerously-skip-permissions"
 alias export_gcs_creds='export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.config/gcloud/application_default_credentials.json"'
+alias update_agent_tools='browse update && cua-driver update --apply && cua-driver skills update'
 
 # Run pi on global Node so per-project mise Node versions don't break pi's launcher.
 pi() {
@@ -102,3 +102,27 @@ pi() {
 
 # Local secrets (unmanaged by chezmoi)
 [[ -r "$HOME/.zshrc.secrets" ]] && source "$HOME/.zshrc.secrets"
+
+# Route Antigravity CLI and desktop apps to the Vertex ADC service account without overriding other GCP tools.
+# AGY_GCP_CREDENTIALS and AGY_GCP_PROJECT come from ~/.zshrc.secrets.
+agy() {
+  AGY_ADC_AUTH=true \
+  GOOGLE_APPLICATION_CREDENTIALS="$AGY_GCP_CREDENTIALS" \
+  GOOGLE_CLOUD_PROJECT="$AGY_GCP_PROJECT" \
+  GOOGLE_CLOUD_QUOTA_PROJECT="$AGY_GCP_PROJECT" \
+  GOOGLE_CLOUD_LOCATION="global" \
+    command agy "$@"
+}
+
+if [[ -n "${ANTIGRAVITY_RESOLVING_ENVIRONMENT:-}" ]] || \
+   ([[ -n "${VSCODE_RESOLVING_ENVIRONMENT:-}" ]] && [[ "$(ps -o comm= -p $PPID 2>/dev/null)" == *Antigravity* ]]); then
+  export AGY_ADC_AUTH=true
+  export GOOGLE_APPLICATION_CREDENTIALS="$AGY_GCP_CREDENTIALS"
+  export GOOGLE_CLOUD_PROJECT="$AGY_GCP_PROJECT"
+  export GOOGLE_CLOUD_QUOTA_PROJECT="$AGY_GCP_PROJECT"
+  export GOOGLE_CLOUD_LOCATION="global"
+fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/rustancorpuz/.local/bin:$PATH"

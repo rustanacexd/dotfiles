@@ -1,1 +1,5 @@
 [[ -r "$HOME/.bashrc" ]] && source "$HOME/.bashrc"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/rustancorpuz/.local/bin:$PATH"

@@ -23,3 +23,7 @@ path=(
 export PATH
 
 [[ -d "$HOME/.orbstack/shell/completions/zsh" ]] && fpath+=("$HOME/.orbstack/shell/completions/zsh")
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/rustancorpuz/.local/bin:$PATH"

@@ -1,2 +1,6 @@
 export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$HOME/.opencode/bin:$HOME/Library/pnpm:$HOME/.cargo/bin:$HOME/go/bin:$HOME/.orbstack/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 [ -r "$HOME/.zshenv.secrets" ] && . "$HOME/.zshenv.secrets"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/rustancorpuz/.local/bin:$PATH"

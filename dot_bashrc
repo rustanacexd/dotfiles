@@ -10,4 +10,24 @@ if [[ $- == *i* ]]; then
   command -v mise >/dev/null 2>&1 && eval "$(mise activate bash)"
   command -v wt >/dev/null 2>&1 && eval "$(command wt config shell init bash)"
   [[ -r "$HOME/.zshrc.secrets" ]] && source "$HOME/.zshrc.secrets"
+  agy() {
+    AGY_ADC_AUTH=true \
+    GOOGLE_APPLICATION_CREDENTIALS="$AGY_GCP_CREDENTIALS" \
+    GOOGLE_CLOUD_PROJECT="$AGY_GCP_PROJECT" \
+    GOOGLE_CLOUD_QUOTA_PROJECT="$AGY_GCP_PROJECT" \
+    GOOGLE_CLOUD_LOCATION="global" \
+      command agy "$@"
+  }
+  if [[ -n "${ANTIGRAVITY_RESOLVING_ENVIRONMENT:-}" ]] || \
+     ([[ -n "${VSCODE_RESOLVING_ENVIRONMENT:-}" ]] && [[ "$(ps -o comm= -p $PPID 2>/dev/null)" == *Antigravity* ]]); then
+    export AGY_ADC_AUTH=true
+    export GOOGLE_APPLICATION_CREDENTIALS="$AGY_GCP_CREDENTIALS"
+    export GOOGLE_CLOUD_PROJECT="$AGY_GCP_PROJECT"
+    export GOOGLE_CLOUD_QUOTA_PROJECT="$AGY_GCP_PROJECT"
+    export GOOGLE_CLOUD_LOCATION="global"
+  fi
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/rustancorpuz/.local/bin:$PATH"
