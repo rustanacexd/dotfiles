@@ -25,12 +25,13 @@ Managed with three standard tools:
 ├── private_Library/private_LaunchAgents/ # GUI env + right-Cmd→Ctrl remap
 ├── .chezmoiexternal.toml                 # Oh My Zsh + fzf-tab + zsh-bat
 ├── .githooks/pre-commit                  # trufflehog secret blocker
+├── AGENTS.md                             # instructions for coding agents maintaining this repo
 └── run_onchange_after_*.sh.tmpl          # runs brew/mise/launchctl only on change
 
 ~ (live machine — real files, no symlinks)
 ├── ~/.zshrc, ~/.Brewfile, ~/.config/mise/config.toml, ...
 ├── ~/.zshenv.secrets                     # EXA_API_KEY (local only, never committed)
-└── ~/.zshrc.secrets                      # AWS + Gemini keys (local only, never committed)
+└── ~/.zshrc.secrets                      # AWS + Gemini keys, Antigravity GCP project (local only, never committed)
 ```
 
 ### How sync works
@@ -67,8 +68,10 @@ Open Terminal (login interactive zsh)
     ├── Oh My Zsh libs + fzf-tab + zsh-bat (cached compinit)
     ├── mise activate zsh            # activates python/node/bun/go/java, JAVA_HOME, CLIs
     ├── cached init: fzf, starship, direnv, bun completions
+    ├── gcloud path.zsh.inc
     ├── aliases + pi() wrapper
-    └── sources ~/.zshrc.secrets     # AWS + Gemini keys
+    ├── sources ~/.zshrc.secrets     # AWS + Gemini keys, AGY_GCP_* values
+    └── agy() wrapper + Antigravity env  # Vertex service account for Antigravity only
 ```
 
 At macOS login, `com.rustan.gui-env.plist` runs `~/.zshenv` + `mise env` so GUI apps (Zed, Raycast, Ghostty, etc.) get the same `PATH`, `JAVA_HOME`, and `EXA_API_KEY`.
@@ -108,16 +111,19 @@ chezmoi update
 ## New Mac setup
 
 1. Install Homebrew from https://brew.sh.
-2. Install `chezmoi` and apply this repo (runs `brew bundle`, `mise install`, and LaunchAgent reloads automatically):
+2. Install `rustup` first, so `brew bundle` builds the Brewfile's cargo crates with it instead of installing Homebrew's `rust`:
+   ```sh
+   curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --no-modify-path
+   ```
+3. Install `chezmoi` and apply this repo (runs `brew bundle`, `mise install`, and LaunchAgent reloads automatically):
    ```sh
    brew install chezmoi
    chezmoi init --apply rustanacexd
    ```
-3. Install vendor tools that manage themselves:
-   - `rustup`: `curl --proto '=https' --tlsv1.2 -fsSL https://sh.rustup.rs | sh -s -- -y --no-modify-path`
+4. Install vendor tools that manage themselves:
    - Claude Code: `curl -fsSL https://claude.ai/install.sh | bash`
    - Zed: `curl -fsSL https://zed.dev/install.sh | sh`
-4. Recreate local secret files (never committed):
+5. Recreate local secret files (never committed):
    - `~/.zshenv.secrets` (mode 600): `export EXA_API_KEY=...`
-   - `~/.zshrc.secrets` (mode 600): `export AWS_ACCESS_KEY_ID=...`, `AWS_SECRET_ACCESS_KEY`, `GEMINI_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`
-5. Open OrbStack and Karabiner-Elements once to finish permissions, then log out and back in.
+   - `~/.zshrc.secrets` (mode 600): `export AWS_ACCESS_KEY_ID=...`, `AWS_SECRET_ACCESS_KEY`, `GEMINI_API_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`, plus `AGY_GCP_CREDENTIALS=<path to service-account json>` and `AGY_GCP_PROJECT=<project id>` for `agy`
+6. Open OrbStack and Karabiner-Elements once to finish permissions, then log out and back in.
